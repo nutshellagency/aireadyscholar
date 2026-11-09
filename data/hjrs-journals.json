@@ -1,0 +1,17 @@
+{
+  "about": "Curated copy of HJRS categories for English literature, linguistics and ELT journals. Fill from hjrs.hec.gov.pk only. Never add an entry from memory or from a WhatsApp list.",
+  "source": "https://hjrs.hec.gov.pk",
+  "last_checked": "never",
+  "checked_by": "",
+  "journals": [
+    {
+      "title": "EXAMPLE - replace or delete",
+      "issn": "0000-0000",
+      "eissn": "",
+      "category": "Y",
+      "valid_until": "",
+      "subject": "Linguistics",
+      "example_only": true
+    }
+  ]
+}
