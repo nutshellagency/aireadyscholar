@@ -31,9 +31,11 @@
           { "name": "query", "in": "query", "required": true, "schema": { "type": "string" } },
           { "name": "year_from", "in": "query", "schema": { "type": "integer" } },
           { "name": "year_to", "in": "query", "schema": { "type": "integer" } },
-          { "name": "pakistan_only", "in": "query", "schema": { "type": "boolean" } }
+          { "name": "must_include", "in": "query", "description": "Extra required words, separated by |", "schema": { "type": "string" } },
+          { "name": "pakistan", "in": "query", "description": "about | authors", "schema": { "type": "string", "enum": ["about", "authors"] } },
+          { "name": "include_books", "in": "query", "schema": { "type": "boolean" } }
         ],
-        "responses": { "200": { "description": "Yearly counts" } }
+        "responses": { "200": { "description": "Yearly counts, loose count and a sample for precision check" } }
       }
     },
     "/rest/closest": {
