@@ -24,13 +24,36 @@ type Cached = { at: number; value: any };
 const cache = new Map<string, Cached>();
 const TTL_MS = 60 * 60 * 1000;
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+// Semantic Scholar allows 1 request per second: every call to its host waits its turn.
+let s2Chain: Promise<void> = Promise.resolve();
+let s2Last = 0;
+function s2Turn(): Promise<void> {
+  const turn = s2Chain.then(async () => {
+    const wait = s2Last + 1100 - Date.now();
+    if (wait > 0) await sleep(wait);
+    s2Last = Date.now();
+  });
+  s2Chain = turn.catch(() => {});
+  return turn;
+}
+
 async function getJson(url: string, headers: Record<string, string> = {}): Promise<any> {
   const hit = cache.get(url);
   if (hit && Date.now() - hit.at < TTL_MS) return hit.value;
-  const res = await fetch(url, {
-    headers: { "User-Agent": `ScholarResearchConnector/0.1${EMAIL ? ` (mailto:${EMAIL})` : ""}`, ...headers },
-    signal: AbortSignal.timeout(15000),
-  });
+  const isS2 = url.includes("api.semanticscholar.org");
+  let res: Response | null = null;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    if (isS2) await s2Turn();
+    res = await fetch(url, {
+      headers: { "User-Agent": `ScholarResearchConnector/0.1${EMAIL ? ` (mailto:${EMAIL})` : ""}`, ...headers },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (res.status !== 429 && res.status < 500) break;
+    if (attempt < 3) await sleep(1000 * 2 ** attempt + Math.floor(Math.random() * 300));
+  }
+  res = res as Response;
   if (!res.ok) {
     const body = await res.text().catch(() => "");
     throw new Error(`${new URL(url).host} answered ${res.status}${body ? `: ${body.slice(0, 200)}` : ""}`);
@@ -247,44 +270,95 @@ export async function searchPapers(a: {
   };
 }
 
-export async function papersPerYear(a: { query: string; year_from?: number; year_to?: number; pakistan_only?: boolean }) {
+// OpenAlex title_and_abstract.search accepts "exact phrases" joined by AND. Brackets, OR and | make it
+// silently ignore the filter and count every work, so they are stripped here and a guard checks the total.
+function quoteTerm(t: string): string {
+  const x = t.replace(/[()|"]/g, " ").replace(/\b(OR|NOT)\b/g, " ").replace(/\s+/g, " ").trim();
+  return /\s/.test(x) ? `"${x}"` : x;
+}
+
+function buildExpression(a: { query: string; must_include?: string[]; pakistan?: string }): string {
+  const pieces = a.query.split(/\bAND\b/).map(quoteTerm).filter(Boolean);
+  for (const t of a.must_include || []) if (quoteTerm(t)) pieces.push(quoteTerm(t));
+  if (a.pakistan === "about") pieces.push("Pakistan");
+  return pieces.join(" AND ");
+}
+
+const IMPLAUSIBLE = 5_000_000; // a topic count this large means the filter was not applied
+
+export async function papersPerYear(a: {
+  query: string;
+  must_include?: string[];
+  year_from?: number;
+  year_to?: number;
+  pakistan?: "about" | "authors";
+  pakistan_only?: boolean;
+  include_books?: boolean;
+}) {
   const from = a.year_from || THIS_YEAR - 10;
   const to = a.year_to || THIS_YEAR;
+  const pakistan = a.pakistan || (a.pakistan_only ? "authors" : undefined);
   const errors: string[] = [];
-  const filter = [`publication_year:${from}-${to}`, "type:article|book-chapter|preprint|dissertation"];
-  if (a.pakistan_only) filter.push("authorships.countries:pk");
-  const strict = await safe(
-    "OpenAlex",
-    getJson(oaUrl("/works", { search: a.query, filter: filter.join(","), group_by: "publication_year" })),
-    errors
-  );
+  const expr = buildExpression({ query: a.query, must_include: a.must_include, pakistan });
+  const base = [
+    `publication_year:${from}-${to}`,
+    a.include_books ? "type:article|book-chapter|book|dissertation|preprint" : "type:article|dissertation",
+  ];
+  if (pakistan === "authors") base.push("authorships.countries:pk");
+  const strictFilter = [...base, `title_and_abstract.search:${expr}`].join(",");
+
+  const strict = await safe("OpenAlex", getJson(oaUrl("/works", { filter: strictFilter, group_by: "publication_year" })), errors);
   const counts: Record<string, number> = {};
   for (const g of strict?.group_by || []) counts[g.key] = g.count;
   const total = Object.values(counts).reduce((s, n) => s + n, 0);
-  const words = a.query.split(/\s+/).filter((w) => w.length > 3);
-  let broad: number | null = null;
-  if (words.length > 2) {
-    const loose = await safe(
-      "OpenAlex (broad)",
-      getJson(oaUrl("/works", { search: words.slice(0, 3).join(" "), filter: filter.join(","), per_page: 1, select: "id" })),
-      errors
-    );
-    broad = loose?.meta?.count ?? null;
+  if (total > IMPLAUSIBLE) {
+    return {
+      query: a.query,
+      expression_used: expr,
+      error: "OpenAlex did not apply the topic filter (the count equals the whole database). Rephrase with plain words or phrases joined by AND, without brackets or OR.",
+    };
   }
-  const warning =
-    broad && total && broad > total * 10
-      ? `The strict count (${total}) is far below a broad match on the first key words (${broad}). The field probably uses other vocabulary: rerun with the terms the closest papers use before reading this as an open gap.`
-      : undefined;
+
+  // Sample of the strict set so the model can check precision before trusting the curve.
+  const sampleRes = await safe(
+    "OpenAlex (sample)",
+    getJson(oaUrl("/works", { filter: strictFilter, per_page: 15, sort: "relevance_score:desc", search: a.query, select: OA_SELECT })),
+    errors
+  );
+  const sample = (sampleRes?.results || []).map((w: any) => {
+    const r = fromOpenAlex(w);
+    return { title: r.title, year: r.year, venue: r.venue, kind: r.kind, pakistan_author: r.pakistan_author, url: r.url, doi: r.doi };
+  });
+
+  // Broad = loose full-text match on the same words, to show how much the vocabulary matters.
+  const loose = await safe(
+    "OpenAlex (broad)",
+    getJson(oaUrl("/works", { search: [a.query, ...(a.must_include || [])].join(" "), filter: base.join(","), per_page: 1, select: "id" })),
+    errors
+  );
+  const broad: number | null = loose?.meta?.count ?? null;
+
+  let reading: string;
+  if (total === 0) reading = "Zero matches usually means the phrase is not the field's own vocabulary. Rerun with the words the closest papers use before reading this as an open gap.";
+  else if (broad && broad > total * 10)
+    reading = `The strict count (${total}) is far below the loose match (${broad}). Loose matching catches papers that only mention the words; trust the strict curve, but check the sample for papers outside the topic.`;
+  else reading = "Strict and loose counts are close. Check the sample: if many titles are off-topic, add a must_include term or narrow the phrase.";
+
   return {
     query: a.query,
+    expression_used: expr,
     window: `${from}-${to}`,
-    pakistan_only: !!a.pakistan_only,
+    pakistan_mode: pakistan || "none",
     counts_by_year: Object.fromEntries(Object.entries(counts).sort()),
     total,
     broad_match: broad,
-    vocabulary_warning: warning,
+    reading,
+    sample_for_precision_check: sample,
     errors: errors.length ? errors : undefined,
-    note: "Counts are estimates from OpenAlex keyword search. Show the yearly curve plainly. A thin count is often a vocabulary problem, not an open field.",
+    note:
+      "Counts are estimates from OpenAlex title-and-abstract search. Show the yearly curve plainly, then read the sample: say roughly how many sample titles are on topic, and treat the count as an upper limit if many are not. " +
+      "pakistan_mode 'about' = title or abstract contains the word Pakistan (studies that name only a city, e.g. Islamabad, are missed: rerun with must_include ['Islamabad'] to check); 'authors' = at least one Pakistan-affiliated author (affiliation data is patchy). " +
+      (THIS_YEAR === to ? `${to} is a partial year.` : ""),
   };
 }
 
