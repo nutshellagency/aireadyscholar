@@ -37,9 +37,12 @@ export async function GET(req: Request, ctx: { params: Promise<{ tool: string }>
       case "per-year":
         out = await papersPerYear({
           query: q.get("query") || "",
+          must_include: q.getAll("must_include").flatMap((x) => x.split("|")).filter(Boolean),
           year_from: num(q.get("year_from")),
           year_to: num(q.get("year_to")),
+          pakistan: (q.get("pakistan") as any) || undefined,
           pakistan_only: bool(q.get("pakistan_only")),
+          include_books: bool(q.get("include_books")),
         });
         break;
       case "closest":
