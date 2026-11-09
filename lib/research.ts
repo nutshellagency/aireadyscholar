@@ -119,18 +119,30 @@ function hjrsLookup(issns: string[] = [], name?: string): any | null {
 function hjrsInfo(issns: string[] = [], name?: string) {
   const hit = hjrsLookup(issns, name);
   const checked = (hjrsList as any).last_checked || "never";
+  const check_by_hand = {
+    url: "https://hjrs.hec.gov.pk",
+    type_this: issns.filter(Boolean)[0] || name || "",
+    how: "Open the link in a normal browser, search the ISSN or journal name, and read the category for the relevant subject area and its validity dates.",
+  };
   if (!hit) {
     return {
       in_our_list: false,
-      note: `Not in our curated HJRS list (last checked: ${checked}). Absence here proves nothing: check hjrs.hec.gov.pk.`,
+      check_by_hand,
+      note: `Not in our curated HJRS list (last checked: ${checked}). Absence here proves nothing: check HJRS by hand.`,
     };
   }
+  const expired = !!hit.valid_until && new Date(hit.valid_until) < new Date();
   return {
     in_our_list: true,
     category: hit.category,
+    subject: hit.subject || null,
     valid_until: hit.valid_until || null,
+    expired,
     list_checked: checked,
-    note: "From our curated copy of HJRS. Confirm the current category on hjrs.hec.gov.pk before relying on it.",
+    check_by_hand,
+    note: expired
+      ? "Our copy of this category has passed its validity date. Treat it as unknown until checked on HJRS."
+      : "From our curated copy of HJRS. Confirm the current category on HJRS before relying on it.",
   };
 }
 
