@@ -362,6 +362,42 @@ export async function papersPerYear(a: {
   };
 }
 
+const STOP = new Set(
+  "a an the of in on at to for and or with by from as is are was were be how what which who whom why when where do does did this that these those their its into about among between towards toward through within using use study studies analysis role impact effect effects case pakistani's".split(" ")
+);
+const GENERIC = new Set("readers reader people perceptions perception attitudes attitude views opinions evaluation evaluate evaluations patterns practices".split(" "));
+
+function keywords(q: string): string[] {
+  const seen = new Set<string>();
+  return q
+    .toLowerCase()
+    .replace(/[^a-z0-9\u00c0-\u024f\s-]/g, " ")
+    .split(/\s+/)
+    .filter((w) => w.length > 2 && !STOP.has(w) && !seen.has(w) && (seen.add(w), true))
+    .slice(0, 7);
+}
+
+// Closest-match lane: all keywords must appear in title or abstract; relax step by step if too few hits.
+async function openAlexClosest(question: string, filter: string | undefined, limit: number): Promise<any[]> {
+  const k = keywords(question);
+  const tries = [k, k.filter((w) => !GENERIC.has(w)), [...k].sort((x, y) => y.length - x.length).slice(0, 3)].filter(
+    (t, i, all) => t.length >= 2 && all.findIndex((u) => u.join(" ") === t.join(" ")) === i
+  );
+  const found: any[] = [];
+  for (const t of tries) {
+    const f = [filter, `title_and_abstract.search:${t.join(" ")}`].filter(Boolean).join(",");
+    const j = await getJson(oaUrl("/works", { filter: f, search: t.join(" "), per_page: limit, select: OA_SELECT }));
+    if ((j.meta?.count || 0) > IMPLAUSIBLE) continue;
+    for (const w of j.results || []) if (!found.some((x) => x.id === w.id)) found.push(w);
+    if (found.length >= Math.min(5, limit)) break;
+  }
+  if (!found.length) {
+    const j = await getJson(oaUrl("/works", { search: k.join(" "), filter, per_page: limit, select: OA_SELECT }));
+    found.push(...(j.results || []));
+  }
+  return found.slice(0, limit).map(fromOpenAlex);
+}
+
 export async function closestStudies(a: { question: string; year_from?: number; limit?: number; include_pakistan?: boolean }) {
   const limit = Math.min(Math.max(a.limit || 10, 3), 25);
   const errors: string[] = [];
@@ -369,13 +405,7 @@ export async function closestStudies(a: { question: string; year_from?: number; 
   if (a.year_from) s2Params.set("year", `${a.year_from}-`);
   const [s2Res, oaRes] = await Promise.all([
     safe("Semantic Scholar", getJson(`${S2}/paper/search?${s2Params}`, s2Headers()).then((j) => (j.data || []).map(fromS2)), errors),
-    safe(
-      "OpenAlex",
-      getJson(oaUrl("/works", { search: a.question.slice(0, 300), filter: oaFilter({ year_from: a.year_from }), per_page: limit, select: OA_SELECT })).then((j) =>
-        (j.results || []).map(fromOpenAlex)
-      ),
-      errors
-    ),
+    safe("OpenAlex", openAlexClosest(a.question, oaFilter({ year_from: a.year_from }), limit), errors),
   ]);
   let recs: any[] = [];
   const seed = (s2Res || [])[0]?.s2_id;
@@ -394,8 +424,8 @@ export async function closestStudies(a: { question: string; year_from?: number; 
     pk =
       (await safe(
         "OpenAlex (Pakistan lane)",
-        getJson(oaUrl("/works", { search: a.question.slice(0, 300), filter: oaFilter({ year_from: a.year_from, pakistan_only: true }), per_page: 8, select: OA_SELECT })).then((j) =>
-          (j.results || []).map((w: any) => ({ ...fromOpenAlex(w), found_by: "openalex_pakistan_lane" }))
+        openAlexClosest(a.question, oaFilter({ year_from: a.year_from, pakistan_only: true }), 8).then((list) =>
+          list.map((r: any) => ({ ...r, found_by: "openalex_pakistan_lane" }))
         ),
         errors
       )) || [];
