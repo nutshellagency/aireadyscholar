@@ -42,12 +42,15 @@ const handler = createMcpHandler(
 
     server.tool(
       "papers_per_year",
-      "Papers per year on a topic (OpenAlex), to judge whether an area is crowded, steady or thin. Also returns a broad-match count and a vocabulary warning when the strict count is probably too low. Counts are estimates; the reading is the scholar's.",
+      "Papers per year on a topic (OpenAlex title-and-abstract search, main concept as an exact phrase), to judge whether an area is crowded, steady or thin. Returns a loose-match count for comparison and a sample of 15 matching papers: read the sample and report how many are on topic before trusting the curve. Counts are estimates; the reading is the scholar's.",
       {
-        query: z.string(),
+        query: z.string().describe("The main concept, matched as an exact phrase in title or abstract, e.g. linguistic landscape. Several phrases may be joined with AND. Do not use OR or brackets."),
+        must_include: z.array(z.string()).optional().describe("Extra words or phrases that must also appear in title or abstract, e.g. [\"signage\"]"),
         year_from: z.number().int().optional(),
         year_to: z.number().int().optional(),
-        pakistan_only: z.boolean().optional(),
+        pakistan: z.enum(["about", "authors"]).optional().describe("about = title or abstract contains the word Pakistan; authors = a Pakistan-affiliated author. Ask the scholar before using."),
+        pakistan_only: z.boolean().optional().describe("Old name for pakistan='authors'"),
+        include_books: z.boolean().optional().describe("Also count books and chapters (default: articles and dissertations only)"),
       },
       async (args) => asText(await papersPerYear(args as any))
     );
