@@ -115,4 +115,10 @@ async function guarded(req: Request) {
   return handler(withAccept(req));
 }
 
+// Gemini (and some other clients) probe the URL with HEAD first. Without this, Next.js routes HEAD to the
+// MCP handler, which never answers it, and the probe times out after 60 seconds.
+export function HEAD() {
+  return new Response(null, { status: 200, headers: { "Content-Type": "application/json", Allow: "GET, POST, DELETE, OPTIONS" } });
+}
+
 export { guarded as GET, guarded as POST, guarded as DELETE };
