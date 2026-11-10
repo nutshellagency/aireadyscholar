@@ -5,7 +5,7 @@
     "version": "0.1.0",
     "description": "Evidence-linked literature search (OpenAlex, Semantic Scholar, Crossref) with a Pakistan lane and HEC/HJRS layer. Results are leads for the scholar to open and read."
   },
-  "servers": [{ "url": "https://hassan-lit.vercel.app" }],
+  "servers": [{ "url": "https://aireadyscholar.vercel.app" }],
   "paths": {
     "/rest/search": {
       "get": {

@@ -28,9 +28,9 @@ Not included on purpose: Google Scholar. It has no official API, and scraping it
    - Semantic Scholar: request a key at semanticscholar.org/product/api. It arrives by email; until then the connector works at the shared, slower limit.
 2. **GitHub:** create a private repo, add these files, push.
 3. **Vercel:** New Project → import the repo → Framework: Next.js → add environment variables from `.env.example` (`OPENALEX_API_KEY`, `SEMANTIC_SCHOLAR_API_KEY`, `CONTACT_EMAIL`, optionally `CONNECTOR_KEY`) → Deploy.
-4. **Test:** `node scripts/smoke.mjs https://hassan-lit.vercel.app YOUR_CONNECTOR_KEY` (the key only if you set one). Every line should say OK with results above 0.
-5. **Connect Claude:** claude.ai → Settings → Connectors → Add custom connector → URL `https://hassan-lit.vercel.app/api/mcp` (add `?key=YOUR_CONNECTOR_KEY` if set). Start a new chat and ask: "Use the scholar research connector to find papers on code-switching in Pakistani TV talk shows since 2018."
-6. **Custom GPT (optional, needs ChatGPT Plus to build):** Configure → Actions → Import from URL `https://hassan-lit.vercel.app/openapi.json`, then replace `YOUR-APP` in the servers line. Free users can use the shared GPT.
+4. **Test:** `node scripts/smoke.mjs https://aireadyscholar.vercel.app YOUR_CONNECTOR_KEY` (the key only if you set one). Every line should say OK with results above 0.
+5. **Connect Claude:** claude.ai → Settings → Connectors → Add custom connector → URL `https://aireadyscholar.vercel.app/api/mcp` (add `?key=YOUR_CONNECTOR_KEY` if set). Start a new chat and ask: "Use the scholar research connector to find papers on code-switching in Pakistani TV talk shows since 2018."
+6. **Custom GPT (optional, needs ChatGPT Plus to build):** Configure → Actions → Import from URL `https://aireadyscholar.vercel.app/openapi.json`, then replace `YOUR-APP` in the servers line. Free users can use the shared GPT.
 
 ## Before the seminar: pass/fail
 

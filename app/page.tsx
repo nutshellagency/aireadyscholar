@@ -57,7 +57,7 @@ export default function Home() {
     };
   }, []);
 
-  const [origin, setOrigin] = useState("https://hassan-lit.vercel.app");
+  const [origin, setOrigin] = useState("https://aireadyscholar.vercel.app");
   useEffect(() => setOrigin(window.location.origin), []);
 
   return (

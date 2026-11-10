@@ -29,10 +29,36 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // Semantic Scholar allows 1 request per second: every call to its host waits its turn.
 let s2Chain: Promise<void> = Promise.resolve();
 let s2Last = 0;
+// Optional shared limiter across all Vercel instances (Upstash Redis, free tier):
+// set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN. Without them, each instance queues on its own.
+const RURL = process.env.UPSTASH_REDIS_REST_URL || "";
+const RTOK = process.env.UPSTASH_REDIS_REST_TOKEN || "";
+
+async function globalS2Slot(maxWaitMs = 20000): Promise<void> {
+  if (!RURL || !RTOK) return;
+  const start = Date.now();
+  while (Date.now() - start < maxWaitMs) {
+    try {
+      const r = await fetch(RURL, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${RTOK}`, "Content-Type": "application/json" },
+        body: JSON.stringify(["SET", "s2:slot", String(Date.now()), "NX", "PX", "1050"]),
+        signal: AbortSignal.timeout(3000),
+      });
+      const j: any = await r.json();
+      if (j?.result === "OK") return; // we own the next 1.05 s window
+    } catch {
+      return; // limiter down: fall back to the local queue rather than block searches
+    }
+    await sleep(150 + Math.floor(Math.random() * 100));
+  }
+}
+
 function s2Turn(): Promise<void> {
   const turn = s2Chain.then(async () => {
     const wait = s2Last + 1100 - Date.now();
     if (wait > 0) await sleep(wait);
+    await globalS2Slot();
     s2Last = Date.now();
   });
   s2Chain = turn.catch(() => {});
