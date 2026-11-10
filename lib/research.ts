@@ -54,6 +54,41 @@ async function globalS2Slot(maxWaitMs = 20000): Promise<void> {
   }
 }
 
+export async function health() {
+  const out: any = {
+    openalex_key: !!OPENALEX_KEY,
+    semantic_scholar_key: !!S2_KEY,
+    contact_email: !!EMAIL,
+    shared_limiter_configured: !!(RURL && RTOK),
+    shared_limiter_url_looks_like_rest: RURL.startsWith("https://"),
+  };
+  if (RURL && RTOK) {
+    try {
+      const r = await fetch(RURL, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${RTOK}`, "Content-Type": "application/json" },
+        body: JSON.stringify(["PING"]),
+        signal: AbortSignal.timeout(4000),
+      });
+      const j: any = await r.json().catch(() => ({}));
+      out.shared_limiter_ping = j?.result === "PONG" ? "ok" : `failed (${r.status})`;
+    } catch (e: any) {
+      out.shared_limiter_ping = `failed (${e?.name || "error"})`;
+    }
+  }
+  try {
+    await s2Turn();
+    const r = await fetch(`${S2}/paper/search?query=linguistic%20landscape&limit=1&fields=title`, {
+      headers: s2Headers(),
+      signal: AbortSignal.timeout(8000),
+    });
+    out.semantic_scholar = r.ok ? "ok" : `answered ${r.status}`;
+  } catch (e: any) {
+    out.semantic_scholar = `failed (${e?.name || "error"})`;
+  }
+  return out;
+}
+
 function s2Turn(): Promise<void> {
   const turn = s2Chain.then(async () => {
     const wait = s2Last + 1100 - Date.now();
