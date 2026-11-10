@@ -99,9 +99,20 @@ const handler = createMcpHandler(
   { basePath: "/api", maxDuration: 60, verboseLogs: false }
 );
 
+// Some MCP clients (possibly Gemini's connector check) send Accept: application/json only, or no Accept.
+// The SDK answers those with 406, so we widen the header before handing the request on.
+function withAccept(req: Request): Request {
+  if (req.method !== "POST") return req;
+  const a = (req.headers.get("accept") || "").toLowerCase();
+  if (a.includes("application/json") && a.includes("text/event-stream")) return req;
+  const headers = new Headers(req.headers);
+  headers.set("accept", "application/json, text/event-stream");
+  return new Request(req.url, { method: req.method, headers, body: req.body, duplex: "half" } as RequestInit);
+}
+
 async function guarded(req: Request) {
   if (!authorized(req)) return denied();
-  return handler(req);
+  return handler(withAccept(req));
 }
 
 export { guarded as GET, guarded as POST, guarded as DELETE };
