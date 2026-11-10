@@ -243,7 +243,9 @@ export default function Home() {
           <Photo src={IMG.library} alt="A large library hall with tall green shelves" className="herobg" />
           <div className="wrap herogrid">
             <div className="herotext">
-              <h1>Become an AI-Ready Scholar.</h1>
+              <h1>
+                Become an <span className="nowrap">AI-Ready Scholar.</span>
+              </h1>
               <p className="lede">
                 An eight-week course in agentic AI for English literature and linguistics researchers in Pakistan. Search
                 the whole field, test your topic, evidence your gap, and keep every step honest.

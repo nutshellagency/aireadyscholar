@@ -214,3 +214,5 @@ code { font-family: var(--mono); font-size: 0.9em; }
   html { scroll-behavior: auto; }
   .field { transition: none; }
 }
+.nowrap { white-space: nowrap; }
+@media (max-width: 560px) { .nowrap { white-space: normal; } }
