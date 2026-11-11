@@ -39,7 +39,7 @@ const DESCENT: { n: string; title: string; text: string; tool: string; gap?: boo
 
 const TOOLKIT: { name: string; text: string; href?: string; label?: string }[] = [
   { name: "ARS research connector", text: "Live OpenAlex, Semantic Scholar and Crossref data in Claude, Gemini, ChatGPT and other MCP tools. Every paper with a link; every reference checkable." },
-  { name: "Four scholar skills", text: "Blueprint, topic check, gap finder and research workspace: the same examiner-style method every time, and they never write your thesis.", href: "/downloads/scholar-skills.zip", label: "Download the skills" },
+  { name: "Four scholar methods", text: "Blueprint, topic check, gap finder and research workspace, served live by the ARS connector: the same examiner-style method every time, always the latest version, and they never write your thesis.", href: "/kit", label: "How to connect" },
   { name: "Workspace pack", text: "Excel logs for AI use, searches, reading, gap evidence and decisions, plus Word skeletons for a thesis, a journal article and your AI declaration.", href: "/downloads/AI-Ready-Scholar-Workspace.zip", label: "Download the pack" },
 ];
 
@@ -314,7 +314,7 @@ export default function Home() {
                 </li>
                 <li>
                   <h3>Agentic research</h3>
-                  <p>Claude with the ARS connector and our skills: test your idea against the whole field.</p>
+                  <p>Claude with the ARS connector and its four methods: test your idea against the whole field.</p>
                 </li>
               </ol>
             </div>
@@ -496,9 +496,6 @@ export default function Home() {
             <h3>Toolkit</h3>
             <a href="/kit">Latest versions and setup</a>
             <a href="#toolkit">ARS connector</a>
-            <a href="/downloads/scholar-skills.zip" download>
-              Scholar skills
-            </a>
             <a href="/downloads/AI-Ready-Scholar-Workspace.zip" download>
               Workspace pack
             </a>
