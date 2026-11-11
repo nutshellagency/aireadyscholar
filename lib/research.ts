@@ -2,6 +2,7 @@
 // Every function returns plain JSON: records with links, plus a "note" telling the model
 // how to present them. Results are leads for the scholar to open and read, never conclusions.
 
+import kitManifest from "../data/kit.json";
 import hjrsList from "../data/hjrs-journals.json";
 
 const OA = "https://api.openalex.org";
@@ -646,5 +647,36 @@ export function pakistanRequirements() {
     hjrs: "HEC Journal Recognition System ranks journals W, X and Y; categories are recalculated each cycle. Always check hjrs.hec.gov.pk.",
     international: "COPE and ICMJE: AI tools cannot be authors. Major publishers require AI disclosure in a stated place (for example Elsevier: a declaration section before the references).",
     note: "Summary for orientation, not legal advice. The university's own policy and the journal's author guidelines take precedence; cite the original documents.",
+  };
+}
+
+
+// Latest versions of every kit component, so skills can tell the scholar when theirs is out of date.
+export function kitStatus(a: { component?: string; installed_version?: string } = {}) {
+  const k: any = kitManifest;
+  const newer = (x: string, y: string) => {
+    const p = (v: string) => (v || "0").split(".").map((n) => parseInt(n, 10) || 0);
+    const [a1, b1, c1] = p(x), [a2, b2, c2] = p(y);
+    return a1 !== a2 ? a1 > a2 : b1 !== b2 ? b1 > b2 : c1 > c2;
+  };
+  const comp = a.component ? k.components.find((c: any) => c.id === a.component) : null;
+  return {
+    kit_version: k.kit_version,
+    released: k.released,
+    home: k.home,
+    components: k.components,
+    latest_changes: k.changes.slice(0, 3),
+    check: comp && a.installed_version
+      ? {
+          component: comp.id,
+          installed: a.installed_version,
+          latest: comp.version,
+          update_available: newer(comp.version, a.installed_version),
+          how_to_update: newer(comp.version, a.installed_version)
+            ? `Download ${comp.download}, remove the old ${comp.id} skill, and upload the new one. Steps for Claude, Gemini and ChatGPT: ${k.home}`
+            : "Up to date.",
+        }
+      : undefined,
+    note: "Tell the scholar in one line only if an update is available, then continue.",
   };
 }
