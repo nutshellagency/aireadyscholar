@@ -2,6 +2,7 @@
 import { createMcpHandler } from "mcp-handler";
 import { z } from "zod";
 import { authorized, denied } from "@/lib/auth";
+import { getMethod, workspaceTemplate, promptText, METHOD_NAMES } from "@/lib/methods";
 import {
   searchPapers,
   papersPerYear,
@@ -22,7 +23,10 @@ const INSTRUCTIONS =
   "with an optional Pakistan lane and an HEC/HJRS layer. Results are leads for the scholar to open and read, never conclusions. " +
   "The scholar owns the topic, the gap, the questions and every word of the thesis; never write thesis text for them. " +
   "Before using the Pakistan lane or HEC/HJRS rules, ask the scholar whether they want that angle, unless they already said. " +
-  "Every paper you list must come from a tool result in this conversation and carry its link. Never invent a reference.";
+  "Every paper you list must come from a tool result in this conversation and carry its link. Never invent a reference. " +
+  "AI-Ready Scholar methods: when the scholar asks to test a topic, find a gap, set up a workspace, check research questions or plan a thesis, " +
+  "call get_method for the matching method (topic-check, gap-finder, research-workspace, blueprint) and follow the latest version it returns. " +
+  "Keep the scholar's logs as the method describes; if no workspace folder or repository is connected, ask the scholar to connect one.";
 
 const handler = createMcpHandler(
   (server) => {
@@ -105,6 +109,37 @@ const handler = createMcpHandler(
       },
       async (args) => asText(kitStatus(args as any))
     );
+
+    server.tool(
+      "get_method",
+      "Returns the latest version of an AI-Ready Scholar method (scholar-blueprint, scholar-topic-check, scholar-gap-finder, scholar-research-workspace). Call it at the start whenever the scholar asks for one of these methods, or when their installed skill tells you to, and follow the returned method if it is newer than the installed copy.",
+      { name: z.string().describe("Method name, e.g. scholar-topic-check, or short: topic-check, gap-finder, workspace, blueprint") },
+      async (args) => asText(getMethod(args as any))
+    );
+
+    server.tool(
+      "workspace_template",
+      "Files and folders of the scholar's AI-Ready Scholar workspace (README, logs/*.csv, disclosure draft, notes/), to create in their connected folder or repository. Never overwrite existing files.",
+      {},
+      async () => asText(workspaceTemplate())
+    );
+
+    const LABELS: Record<string, string> = {
+      "scholar-blueprint": "Plan my thesis: HEC and university rules, approach, journals, decision log",
+      "scholar-topic-check": "Test my topic as an examiner would",
+      "scholar-gap-finder": "Find and evidence my research gap",
+      "scholar-research-workspace": "Set up my workspace; check my research questions; questionnaire blueprint",
+    };
+    for (const id of METHOD_NAMES) {
+      (server as any).prompt(
+        `ars-${id.replace(/^scholar-/, "")}`,
+        `AI-Ready Scholar · ${LABELS[id] || id} (always the latest version)`,
+        { topic: z.string().optional().describe("Your topic, research questions or material (optional)") },
+        async (args: any) => ({
+          messages: [{ role: "user", content: { type: "text", text: promptText(id, args?.topic) } }],
+        })
+      );
+    }
   },
   { instructions: INSTRUCTIONS } as any,
   { basePath: "/api", maxDuration: 60, verboseLogs: false }
