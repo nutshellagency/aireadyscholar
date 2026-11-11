@@ -25,8 +25,8 @@ export default function Kit() {
             <a href="#setup">Set up</a>
             <a href="#logs">Logs</a>
             <a href="#updates">Updates</a>
-            <a className="navcta" href="/downloads/scholar-skills.zip">
-              Download all skills
+            <a className="navcta" href="#setup">
+              Connect ARS
             </a>
           </nav>
         </div>
@@ -36,7 +36,7 @@ export default function Kit() {
           <div className="wrap">
             <h1 className="kith1">The AI-Ready Scholar kit</h1>
             <p className="intro">
-              Version {k.kit_version}, released {new Date(k.released).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}. This page always shows the latest version of everything. Every skill tells you when yours is older.
+              Version {k.kit_version}, released {new Date(k.released).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}. This page always shows the latest version of everything. The four methods are served only through the ARS connector, so connecting ARS always gives you the latest one; there is nothing to download or update.
             </p>
             <div className="tablewrap">
               <table className="kittable">
@@ -55,7 +55,7 @@ export default function Kit() {
                       <td>{ABOUT[c.id]?.what}</td>
                       <td>{c.version}</td>
                       <td>
-                        {c.type === "connector" ? (
+                        {c.type === "connector" || c.type === "method" ? (
                           <code>{c.download}</code>
                         ) : (
                           <a className="textlink" href={c.download} download>
@@ -81,22 +81,21 @@ export default function Kit() {
                   <li>Settings, Connectors, Add custom connector: paste <code>https://aireadyscholar.vercel.app/api/mcp</code>. The free plan allows one custom connector. You do this once: the connector always serves the latest method.</li>
                   <li>Connect your research folder (Claude desktop) or a private GitHub repository, so the AI can keep your logs. It creates the workspace for you if it is empty.</li>
                   <li>Start: choose an ARS prompt from the connector menu (for example "ars-topic-check"), or type "Use the ARS topic-check method."</li>
-                  <li>Optional: upload the skill zips too, so the methods also work when the connector is off.</li>
                 </ol>
               </div>
               <div>
                 <h3>Gemini</h3>
                 <ol>
-                  <li>Create a skill for each SKILL.md: paste its text as the instructions. With the ARS connector attached, the skill loads the latest method itself; without it, download the new text from this page when the version changes.</li>
-                  <li>Attach your NotebookLM notebook with your papers.</li>
-                  <li>Custom connectors (the ARS connector) need a Google AI Pro or Ultra plan. Without one, the skill still works but cannot search the databases.</li>
+                  <li>Add the ARS connector: <code>https://aireadyscholar.vercel.app/api/mcp</code>. Check whether your Gemini plan allows custom connectors.</li>
+                  <li>Type <code>@</code> to attach your NotebookLM notebook, then <code>@ars-connector</code>, and ask: "Call get_method with the name scholar-topic-check and follow it. Quote the version it returns."</li>
+                  <li>Check the version line: it must match the version on this page. If it does not, the method was not loaded; treat the answer as unchecked.</li>
                 </ol>
               </div>
               <div>
                 <h3>ChatGPT</h3>
                 <ol>
-                  <li>Paste a SKILL.md into a project's instructions. A custom GPT with the ARS Actions loads the latest method through getMethod; otherwise re-paste when the version changes.</li>
-                  <li>To use the connector, a custom GPT with Actions imports <code>https://aireadyscholar.vercel.app/openapi.json</code>. Building a GPT needs a paid plan; anyone can use a shared one.</li>
+                  <li>Free ChatGPT cannot add connectors. The route is one shared custom GPT with the ARS Actions (<code>https://aireadyscholar.vercel.app/openapi.json</code>), built once on a paid plan; scholars on free accounts can then open and use it.</li>
+                  <li>Until that GPT is published, use Claude or Gemini with ARS.</li>
                 </ol>
               </div>
             </div>
@@ -106,7 +105,7 @@ export default function Kit() {
         <section className="band" id="logs">
           <div className="wrap">
             <h2>How your logs stay up to date</h2>
-            <p className="intro">Every skill writes a log row after each step. Where it goes depends on what the AI can reach.</p>
+            <p className="intro">Every method writes a log row after each step. Where it goes depends on what the AI can reach.</p>
             <div className="tablewrap">
               <table className="kittable">
                 <thead>
