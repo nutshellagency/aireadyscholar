@@ -216,3 +216,19 @@ code { font-family: var(--mono); font-size: 0.9em; }
 }
 .nowrap { white-space: nowrap; }
 @media (max-width: 560px) { .nowrap { white-space: normal; } }
+
+/* kit page */
+.kith1 { font-size: clamp(38px, 5vw, 60px); letter-spacing: -0.015em; }
+.kittable { width: 100%; border-collapse: collapse; min-width: 680px; margin-top: 8px; }
+.kittable th, .kittable td { text-align: left; vertical-align: top; padding: 16px 16px 16px 0; border-top: 1px solid var(--line); }
+.kittable thead th { font-size: 14px; color: var(--slate); border-top: 0; }
+.kittable tbody th { font: 600 17px var(--serif); width: 26%; }
+.kittable code { font-size: 12px; }
+.setupgrid { margin-top: 36px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.setupgrid ol { margin: 12px 0 0; padding-left: 20px; display: grid; gap: 10px; color: #2f434d; }
+.setupgrid code { font-size: 12px; word-break: break-all; }
+.changes { list-style: none; margin: 0; padding: 0; }
+.changes li { padding: 18px 0; border-top: 1px solid var(--line); }
+.changes p { margin-top: 6px; color: #2f434d; }
+.foot .footbase a { color: #b9ccc5; }
+@media (max-width: 960px) { .setupgrid { grid-template-columns: 1fr; } }
