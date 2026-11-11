@@ -5,22 +5,74 @@
     "version": "0.1.0",
     "description": "Evidence-linked literature search (OpenAlex, Semantic Scholar, Crossref) with a Pakistan lane and HEC/HJRS layer. Results are leads for the scholar to open and read."
   },
-  "servers": [{ "url": "https://aireadyscholar.vercel.app" }],
+  "servers": [
+    {
+      "url": "https://aireadyscholar.vercel.app"
+    }
+  ],
   "paths": {
     "/rest/search": {
       "get": {
         "operationId": "searchPapers",
         "summary": "Search papers across OpenAlex and Semantic Scholar",
         "parameters": [
-          { "name": "query", "in": "query", "required": true, "schema": { "type": "string" } },
-          { "name": "year_from", "in": "query", "schema": { "type": "integer" } },
-          { "name": "year_to", "in": "query", "schema": { "type": "integer" } },
-          { "name": "type", "in": "query", "schema": { "type": "string" }, "description": "article, review, preprint, book-chapter, dissertation" },
-          { "name": "open_access_only", "in": "query", "schema": { "type": "boolean" } },
-          { "name": "pakistan_only", "in": "query", "schema": { "type": "boolean" } },
-          { "name": "limit", "in": "query", "schema": { "type": "integer" } }
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year_from",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "year_to",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "article, review, preprint, book-chapter, dissertation"
+          },
+          {
+            "name": "open_access_only",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "pakistan_only",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
         ],
-        "responses": { "200": { "description": "Ranked papers with links" } }
+        "responses": {
+          "200": {
+            "description": "Ranked papers with links"
+          }
+        }
       }
     },
     "/rest/per-year": {
@@ -28,14 +80,61 @@
         "operationId": "papersPerYear",
         "summary": "Papers per year on a topic, with a vocabulary warning",
         "parameters": [
-          { "name": "query", "in": "query", "required": true, "schema": { "type": "string" } },
-          { "name": "year_from", "in": "query", "schema": { "type": "integer" } },
-          { "name": "year_to", "in": "query", "schema": { "type": "integer" } },
-          { "name": "must_include", "in": "query", "description": "Extra required words, separated by |", "schema": { "type": "string" } },
-          { "name": "pakistan", "in": "query", "description": "about | authors", "schema": { "type": "string", "enum": ["about", "authors"] } },
-          { "name": "include_books", "in": "query", "schema": { "type": "boolean" } }
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year_from",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "year_to",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "must_include",
+            "in": "query",
+            "description": "Extra required words, separated by |",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pakistan",
+            "in": "query",
+            "description": "about | authors",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "about",
+                "authors"
+              ]
+            }
+          },
+          {
+            "name": "include_books",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
         ],
-        "responses": { "200": { "description": "Yearly counts, loose count and a sample for precision check" } }
+        "responses": {
+          "200": {
+            "description": "Yearly counts, loose count and a sample for precision check"
+          }
+        }
       }
     },
     "/rest/closest": {
@@ -43,43 +142,142 @@
         "operationId": "closestStudies",
         "summary": "Studies closest to a research question (rival check)",
         "parameters": [
-          { "name": "question", "in": "query", "required": true, "schema": { "type": "string" } },
-          { "name": "year_from", "in": "query", "schema": { "type": "integer" } },
-          { "name": "limit", "in": "query", "schema": { "type": "integer" } },
-          { "name": "include_pakistan", "in": "query", "schema": { "type": "boolean" } }
+          {
+            "name": "question",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year_from",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "include_pakistan",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
         ],
-        "responses": { "200": { "description": "Closest studies with links" } }
+        "responses": {
+          "200": {
+            "description": "Closest studies with links"
+          }
+        }
       }
     },
     "/rest/verify": {
       "get": {
         "operationId": "verifyReference",
         "summary": "Check one reference against Crossref",
-        "parameters": [{ "name": "citation", "in": "query", "required": true, "schema": { "type": "string" } }],
-        "responses": { "200": { "description": "Candidate records" } }
+        "parameters": [
+          {
+            "name": "citation",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Candidate records"
+          }
+        }
       }
     },
     "/rest/paper": {
       "get": {
         "operationId": "getPaper",
         "summary": "One paper by DOI or OpenAlex ID",
-        "parameters": [{ "name": "id", "in": "query", "required": true, "schema": { "type": "string" } }],
-        "responses": { "200": { "description": "Paper record" } }
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paper record"
+          }
+        }
       }
     },
     "/rest/journal": {
       "get": {
         "operationId": "journalCheck",
         "summary": "Journal profile and HJRS note",
-        "parameters": [{ "name": "journal", "in": "query", "required": true, "schema": { "type": "string" } }],
-        "responses": { "200": { "description": "Journal profile" } }
+        "parameters": [
+          {
+            "name": "journal",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Journal profile"
+          }
+        }
       }
     },
     "/rest/pakistan": {
       "get": {
         "operationId": "pakistanRequirements",
         "summary": "Dated summary of HEC, HJRS and international AI rules",
-        "responses": { "200": { "description": "Summary" } }
+        "responses": {
+          "200": {
+            "description": "Summary"
+          }
+        }
+      }
+    },
+    "/rest/kit": {
+      "get": {
+        "operationId": "kitStatus",
+        "summary": "Latest versions of the AI-Ready Scholar skills, workspace pack and connector",
+        "parameters": [
+          {
+            "name": "component",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "installed_version",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Versions and changes"
+          }
+        }
       }
     }
   }
