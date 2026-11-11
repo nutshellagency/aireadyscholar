@@ -19,21 +19,21 @@ const FIELD: [number, number][] = [
 ];
 
 const MODULES: { title: string; outcome: string; tools: string[] }[] = [
-  { title: "The rules before the tools", outcome: "Know what HEC's GenAI framework, your university and journals allow, and set up your research blueprint and decision log.", tools: ["scholar-blueprint", "HEC GenAI framework", "HJRS"] },
-  { title: "Searching like a researcher", outcome: "Search Semantic Scholar with filters and exact phrases, and keep a search log a supervisor can check.", tools: ["Semantic Scholar", "Search log"] },
-  { title: "Reading your sources with NotebookLM", outcome: "Extract method, sample and findings from your PDFs into a reading matrix, with a citation for every cell.", tools: ["NotebookLM", "Reading matrix"] },
-  { title: "Saved methods: Gemini skills and custom GPTs", outcome: "Run the same honest checklist every time, and learn where a method without data over-claims.", tools: ["Gemini skills", "Custom GPTs"] },
-  { title: "Agentic research with the ARS connector", outcome: "Count a field per year, find the closest studies and verify every reference against live databases.", tools: ["Claude", "ARS connector"] },
-  { title: "Testing the topic and finding the gap", outcome: "Run the rival check and the fake-gap alarms, and build an evidence table you can defend.", tools: ["scholar-topic-check", "scholar-gap-finder"] },
-  { title: "Questions, instruments and ethics", outcome: "Check your research questions without ghost-writing, plan a questionnaire from published instruments, pilot it and get ethics approval.", tools: ["scholar-research-workspace"] },
-  { title: "Writing it yourself, and declaring it", outcome: "Fill the thesis or article skeleton in your own words, choose a journal, and write an AI declaration from your log.", tools: ["Workspace pack", "AI-use log"] },
+  { title: "How AI works, where it fails, the rules", outcome: "Know what HEC's GenAI framework, your university and journals allow; set up your blueprint, decision log and AI-use log.", tools: ["scholar-blueprint", "HEC GenAI framework", "Workspace pack"] },
+  { title: "AI as your critical friend", outcome: "Write prompts that ask for questions and objections, not answers, and keep the decision yours.", tools: ["Prompt structure", "Gemini skills", "Custom GPTs"] },
+  { title: "Choosing a topic and finding the gap", outcome: "Count the field, run the rival check and the fake-gap alarms, and build an evidence table you can defend.", tools: ["ARS connector", "scholar-topic-check", "scholar-gap-finder"] },
+  { title: "Reading and reviewing with AI agents", outcome: "Search with exact phrases, read your PDFs in NotebookLM, and build a reading matrix with a citation in every cell.", tools: ["Semantic Scholar", "NotebookLM", "Reading matrix"] },
+  { title: "Discourse and corpus analysis", outcome: "Use corpus tools and AI checks for discourse and textual work, with every finding traced to your own data.", tools: ["AntConc", "LancsBox", "QualCoder"] },
+  { title: "Collecting and analysing data", outcome: "Plan instruments from published scales, pilot, get ethics approval, and analyse in jamovi or SPSS. AI never touches the data.", tools: ["scholar-research-workspace", "jamovi", "SPSS"] },
+  { title: "Writing with AI, not by AI", outcome: "Fill the thesis or article skeleton in your own words, choose a journal on evidence, and write your AI declaration from your log.", tools: ["Thesis skeleton", "Article skeleton", "AI declaration"] },
+  { title: "Your research agent and capstone", outcome: "Run the whole system on your own topic in Claude, Gemini or ChatGPT, with logs updating as you go, and present it.", tools: ["Claude", "Gemini", "ChatGPT", "ARS connector"] },
 ];
 
 const DESCENT: { n: string; title: string; text: string; tool: string; gap?: boolean }[] = [
   { n: "250 million", title: "records in the open databases", text: "Everything OpenAlex and Semantic Scholar have indexed, in every field.", tool: "Where every search starts" },
-  { n: "4,710", title: "keyword matches on Semantic Scholar", text: "Filtered to linguistics since 2016. Loose matching: the most-cited results are about the UAE.", tool: "Module 2 · Semantic Scholar" },
-  { n: "58", title: "papers really about the topic", text: "The exact phrase plus Pakistan in the title or abstract. 13 of 15 sampled were fully on topic, so the count can be checked.", tool: "Module 5 · ARS connector" },
-  { n: "7", title: "closest studies, read in full", text: "Nearly all of them photograph and count signs. Only a handful ask people, through 8 to 20 interviews.", tool: "Modules 3 and 6 · NotebookLM, gap finder" },
+  { n: "4,710", title: "keyword matches on Semantic Scholar", text: "Filtered to linguistics since 2016. Loose matching: the most-cited results are about the UAE.", tool: "Module 4 · Semantic Scholar" },
+  { n: "58", title: "papers really about the topic", text: "The exact phrase plus Pakistan in the title or abstract. 13 of 15 sampled were fully on topic, so the count can be checked.", tool: "Module 3 · ARS connector" },
+  { n: "7", title: "closest studies, read in full", text: "Nearly all of them photograph and count signs. Only a handful ask people, through 8 to 20 interviews.", tool: "Modules 3 and 4 · gap finder, NotebookLM" },
   { n: "1", title: "candidate gap", text: "How the people who read signs in Islamabad and Rawalpindi judge English, Urdu and Roman Urdu. The scholar tests it; the supervisor decides.", tool: "Your judgement", gap: true },
 ];
 
