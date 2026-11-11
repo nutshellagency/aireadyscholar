@@ -1,7 +1,7 @@
 // Plain REST endpoints, for Custom GPT Actions and quick browser tests.
 // Example: /rest/search?query=code-switching%20Pakistani%20TV&year_from=2018
 import { authorized, denied } from "@/lib/auth";
-import { health,
+import { health, kitStatus,
   searchPapers,
   papersPerYear,
   closestStudies,
@@ -52,6 +52,9 @@ export async function GET(req: Request, ctx: { params: Promise<{ tool: string }>
           limit: num(q.get("limit")),
           include_pakistan: bool(q.get("include_pakistan")),
         });
+        break;
+      case "kit":
+        out = kitStatus({ component: q.get("component") || undefined, installed_version: q.get("installed_version") || undefined });
         break;
       case "health":
         out = await health();
