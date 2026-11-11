@@ -279,6 +279,38 @@
           }
         }
       }
+    },
+    "/rest/method": {
+      "get": {
+        "operationId": "getMethod",
+        "summary": "Latest AI-Ready Scholar method text (topic-check, gap-finder, research-workspace, blueprint). Call first and follow it.",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Method"
+          }
+        }
+      }
+    },
+    "/rest/workspace": {
+      "get": {
+        "operationId": "workspaceTemplate",
+        "summary": "Workspace files (logs, disclosure draft, README) to create for the scholar",
+        "responses": {
+          "200": {
+            "description": "Files"
+          }
+        }
+      }
     }
   }
 }
