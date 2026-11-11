@@ -1,31 +1,31 @@
 {
   "kit": "AI-Ready Scholar",
-  "kit_version": "1.3.0",
+  "kit_version": "1.3.1",
   "released": "2026-11-11",
   "home": "https://aireadyscholar.vercel.app/kit",
   "components": [
     {
       "id": "scholar-blueprint",
       "type": "method",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "download": "ARS prompt ars-blueprint or get_method"
     },
     {
       "id": "scholar-topic-check",
       "type": "method",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "download": "ARS prompt ars-topic-check or get_method"
     },
     {
       "id": "scholar-gap-finder",
       "type": "method",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "download": "ARS prompt ars-gap-finder or get_method"
     },
     {
       "id": "scholar-research-workspace",
       "type": "method",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "download": "ARS prompt ars-research-workspace or get_method"
     },
     {
@@ -42,6 +42,11 @@
     }
   ],
   "changes": [
+    {
+      "version": "1.3.1",
+      "date": "2026-11-11",
+      "summary": "Every method ends with a short carry-forward block to paste into a new chat, so free plans last longer: one stage per chat."
+    },
     {
       "version": "1.3.0",
       "date": "2026-11-11",
