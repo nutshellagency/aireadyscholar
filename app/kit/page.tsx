@@ -78,16 +78,16 @@ export default function Kit() {
               <div>
                 <h3>Claude</h3>
                 <ol>
-                  <li>Settings, Capabilities, Skills: upload each skill zip.</li>
-                  <li>Settings, Connectors, Add custom connector: paste <code>https://aireadyscholar.vercel.app/api/mcp</code>. The free plan allows one custom connector.</li>
-                  <li>Download the workspace pack and unzip it into a folder on your computer, or into a private GitHub repository.</li>
-                  <li>Start a new chat and say: "Use the scholar-topic-check skill."</li>
+                  <li>Settings, Connectors, Add custom connector: paste <code>https://aireadyscholar.vercel.app/api/mcp</code>. The free plan allows one custom connector. You do this once: the connector always serves the latest method.</li>
+                  <li>Connect your research folder (Claude desktop) or a private GitHub repository, so the AI can keep your logs. It creates the workspace for you if it is empty.</li>
+                  <li>Start: choose an ARS prompt from the connector menu (for example "ars-topic-check"), or type "Use the ARS topic-check method."</li>
+                  <li>Optional: upload the skill zips too, so the methods also work when the connector is off.</li>
                 </ol>
               </div>
               <div>
                 <h3>Gemini</h3>
                 <ol>
-                  <li>Create a skill for each SKILL.md: paste its text as the instructions.</li>
+                  <li>Create a skill for each SKILL.md: paste its text as the instructions. With the ARS connector attached, the skill loads the latest method itself; without it, download the new text from this page when the version changes.</li>
                   <li>Attach your NotebookLM notebook with your papers.</li>
                   <li>Custom connectors (the ARS connector) need a Google AI Pro or Ultra plan. Without one, the skill still works but cannot search the databases.</li>
                 </ol>
@@ -95,7 +95,7 @@ export default function Kit() {
               <div>
                 <h3>ChatGPT</h3>
                 <ol>
-                  <li>Paste a SKILL.md into a project's instructions.</li>
+                  <li>Paste a SKILL.md into a project's instructions. A custom GPT with the ARS Actions loads the latest method through getMethod; otherwise re-paste when the version changes.</li>
                   <li>To use the connector, a custom GPT with Actions imports <code>https://aireadyscholar.vercel.app/openapi.json</code>. Building a GPT needs a paid plan; anyone can use a shared one.</li>
                 </ol>
               </div>
@@ -140,7 +140,7 @@ export default function Kit() {
             <div>
               <h2>Staying on the latest version</h2>
               <p className="intro">
-                Each skill shows its version at the top. When the ARS connector is connected, the skill checks this kit once per chat and tells you if a newer version exists. To update: download the new zip here, remove the old skill, upload the new one. Your workspace files are never replaced.
+                With the ARS connector connected, you always get the latest method: the connector serves it, and installed skills load it first. Without the connector, each skill shows its version at the top; download the new one here when the version changes. Your workspace files are never replaced.
               </p>
             </div>
             <ol className="changes">
