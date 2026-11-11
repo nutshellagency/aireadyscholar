@@ -25,7 +25,7 @@ const INSTRUCTIONS =
   "Before using the Pakistan lane or HEC/HJRS rules, ask the scholar whether they want that angle, unless they already said. " +
   "Every paper you list must come from a tool result in this conversation and carry its link. Never invent a reference. " +
   "AI-Ready Scholar methods: when the scholar asks to test a topic, find a gap, set up a workspace, check research questions or plan a thesis, " +
-  "call get_method for the matching method (topic-check, gap-finder, research-workspace, blueprint) and follow the latest version it returns. " +
+  "call get_method for the matching method (topic-check, gap-finder, research-workspace, blueprint) and follow the latest version it returns; quote its version field exactly, never invent one. " +
   "Keep the scholar's logs as the method describes; if no workspace folder or repository is connected, ask the scholar to connect one.";
 
 const handler = createMcpHandler(
@@ -102,7 +102,7 @@ const handler = createMcpHandler(
 
     server.tool(
       "kit_status",
-      "Latest versions of the AI-Ready Scholar skills, workspace pack and connector, with download links and recent changes. Skills call this once per conversation with their own name and version; tell the scholar in one line only if an update is available.",
+      "Latest versions of the AI-Ready Scholar methods, workspace pack and connector, with recent changes. Call it to compare the scholar's workspace pack version; tell the scholar in one line only if an update is available.",
       {
         component: z.string().optional().describe("e.g. scholar-topic-check or workspace-pack"),
         installed_version: z.string().optional().describe("The version written in the skill or the workspace README, e.g. 1.1.0"),
@@ -112,7 +112,7 @@ const handler = createMcpHandler(
 
     server.tool(
       "get_method",
-      "Returns the latest version of an AI-Ready Scholar method (scholar-blueprint, scholar-topic-check, scholar-gap-finder, scholar-research-workspace). Call it at the start whenever the scholar asks for one of these methods, or when their installed skill tells you to, and follow the returned method if it is newer than the installed copy.",
+      "Returns the latest version of an AI-Ready Scholar method (scholar-blueprint, scholar-topic-check, scholar-gap-finder, scholar-research-workspace). Call it at the start whenever the scholar asks for one of these methods (by name, e.g. 'the ARS topic-check method'), and follow the returned method for the rest of the conversation. Report its version field exactly as returned; never invent a version label.",
       { name: z.string().describe("Method name, e.g. scholar-topic-check, or short: topic-check, gap-finder, workspace, blueprint") },
       async (args) => asText(getMethod(args as any))
     );
