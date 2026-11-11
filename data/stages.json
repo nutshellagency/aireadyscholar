@@ -1,0 +1,149 @@
+{
+ "version": "1.0 (deck v3.2)",
+ "updated": "2026-11-12",
+ "stages": [
+  {
+   "stage": 1,
+   "tool": "Semantic Scholar · free",
+   "title": "From an interest to the field's own search words",
+   "goal": [
+    "Turn your interest into the words the field uses",
+    "Why: you see the whole area, not your guess of it"
+   ],
+   "how": [
+    "Write your interest in one sentence",
+    "Split it: phenomenon · context · angle (e.g. language on signs · Islamabad · readers' views)",
+    "Add synonyms and field terms; quote phrases: \"linguistic landscape\"",
+    "Filter 2016–2026, Linguistics, PDF; skim the top 30 titles and abstracts"
+   ],
+   "care": [
+    "Thousands of results: too broad, so add context or angle",
+    "Zero results: wrong words, not a gap",
+    "Note the words good papers keep using: your next terms"
+   ],
+   "leave": [
+    "A keyword list: your words plus the field's words",
+    "3 to 5 recurring themes",
+    "Search log rows: date, words, filters, counts"
+   ],
+   "prompt": "“My interest: [one sentence]. List the terms this field uses for it, with synonyms. Do not suggest a topic.”"
+  },
+  {
+   "stage": 2,
+   "tool": "ARS · count papers per year",
+   "title": "Measure the field before you choose a corner of it",
+   "goal": [
+    "Know the size and speed of your area",
+    "Why: crowded needs a sharp angle; growing means timely but competitive; empty means check words or feasibility"
+   ],
+   "how": [
+    "Count papers per year for 2 or 3 phrasings",
+    "Read the sample ARS returns; mark how many are on topic",
+    "Compare Pakistan with the world"
+   ],
+   "care": [
+    "A count is only as good as its words: always read the sample",
+    "Zero does not mean open; Semantic Scholar's thousands are not the field"
+   ],
+   "leave": [
+    "One sentence on saturation, e.g. “58 papers, most since 2022, mostly sign counts”",
+    "The trend and the on-topic share",
+    "Log rows"
+   ],
+   "prompt": "“How many papers on \"linguistic landscape\" in Pakistan were published each year since 2016? Show me a sample and how many are on topic.”"
+  },
+  {
+   "stage": 3,
+   "tool": "Choose papers · Gemini Notebook (NotebookLM) · free",
+   "title": "Read the closest studies to see what is missing",
+   "goal": [
+    "Find what the closest studies did and did not do",
+    "Why: a gap comes from evidence, not from an idea"
+   ],
+   "how": [
+    "Pick 5 for a first look, 10 to 20 for a synopsis",
+    "Choose by: closest topic and context, last 5 years plus 2 or 3 classics, a mix of methods, peer reviewed, Pakistani and international",
+    "Upload lawful PDFs; extract per paper: context, sample, framework, method, findings, limitations, future work"
+   ],
+   "care": [
+    "The notebook knows only your papers: its gaps are gaps among them",
+    "Open each PDF to check what it cites"
+   ],
+   "leave": [
+    "A reading matrix (one row per paper)",
+    "2 or 3 gap hypotheses, each with its sources",
+    "Your reference list in Zotero"
+   ],
+   "prompt": "“For each paper: context, sample, framework, method, findings, limitations, future work. One table, cite every cell.” Then: “What did none of these papers do? Cite each.”"
+  },
+  {
+   "stage": 4,
+   "tool": "ARS · closest studies · verify reference",
+   "title": "Find your rivals, and check every reference",
+   "goal": [
+    "Test each hypothesis against the whole field, not five papers",
+    "Why: if a study already answers your question, an examiner will name it"
+   ],
+   "how": [
+    "Search with the field's terms; include the Pakistan lane",
+    "For each rival: same question? same context? same method?",
+    "Verify every reference you will cite against Crossref"
+   ],
+   "care": [
+    "Search prr.hec.gov.pk: unpublished theses are not indexed",
+    "Drop retracted papers; note online-first years"
+   ],
+   "leave": [
+    "A rival list with links: what each did, what yours must add",
+    "Verified references",
+    "The hypothesis that survives"
+   ],
+   "prompt": "“Find the published studies closest to: [hypothesis]. Include Pakistani authors. Does any already answer my question?” · “Verify this reference: …”"
+  },
+  {
+   "stage": 5,
+   "tool": "ARS · gap-finder method",
+   "title": "Test the gap from every angle, then narrow it",
+   "goal": [
+    "Show the gap is real, specific and worth filling",
+    "Why: “no one has studied this” is a claim that needs evidence"
+   ],
+   "how": [
+    "Validate by: evidence · rivals · the field's terms · context (does Pakistan change it?) · method · significance",
+    "Narrow to one place, one group, one data type, one framework, one semester"
+   ],
+   "care": [
+    "Fake-gap alarms: “first in Pakistan” with nothing changed; same lens, another text; few results from the wrong words"
+   ],
+   "leave": [
+    "A one-sentence gap statement",
+    "Verdict: Supported, Partly or Not yet",
+    "Evidence table, search log, what to check by hand"
+   ],
+   "prompt": "“Use the ARS gap-finder method. My gap: [one sentence]. Build the evidence table, run the rival check and the alarms, and tell me what to check by hand.”"
+  },
+  {
+   "stage": 6,
+   "tool": "ARS · topic-check method",
+   "title": "Write the topic, then test it as an examiner would",
+   "goal": [
+    "Turn the gap into a topic your supervisor can approve",
+    "Why: a defensible topic saves a semester"
+   ],
+   "how": [
+    "Topic statement: [phenomenon] in [context], through [framework], using [data and method], to find out [what is unknown], because [why it matters]",
+    "Draft 2 or 3 research questions from it",
+    "Run the 8 checks: clarity, alignment, rivals, saturation, significance, feasibility, defensibility, supervisor fit"
+   ],
+   "care": [
+    "Future hurdles: access to participants, ethics approval, questionnaire language, time, cost, supervisor expertise, journal fit (HJRS)"
+   ],
+   "leave": [
+    "Topic statement and draft questions",
+    "Ready, Refine or Not yet, plus 3 examiner questions",
+    "Log row and carry-forward block, for your supervisor meeting"
+   ],
+   "prompt": "“Use the ARS topic-check method. My topic: [statement]. Test it as an examiner would. Do not rewrite it.”"
+  }
+ ]
+}
