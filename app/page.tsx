@@ -39,7 +39,7 @@ const DESCENT: { n: string; title: string; text: string; tool: string; gap?: boo
 
 const TOOLKIT: { name: string; text: string; href?: string; label?: string }[] = [
   { name: "ARS research connector", text: "Live OpenAlex, Semantic Scholar and Crossref data in Claude, Gemini, ChatGPT and other MCP tools. Every paper with a link; every reference checkable." },
-  { name: "Four scholar methods", text: "Blueprint, topic check, gap finder and research workspace, served live by the ARS connector: the same examiner-style method every time, always the latest version, and they never write your thesis.", href: "/kit", label: "How to connect" },
+  { name: "Four scholar methods", text: "Blueprint, topic check, gap finder and research workspace, served live by the ARS connector: the same examiner-style method every time, always the latest version, and they never write your thesis.", href: "/connect", label: "How to connect" },
   { name: "Workspace pack", text: "Excel logs for AI use, searches, reading, gap evidence and decisions, plus Word skeletons for a thesis, a journal article and your AI declaration.", href: "/downloads/AI-Ready-Scholar-Workspace.zip", label: "Download the pack" },
 ];
 
@@ -229,6 +229,7 @@ export default function Home() {
             <a href="#modules">Modules</a>
             <a href="#toolkit">Toolkit</a>
             <a href="#method">Case study</a>
+            <a href="/connect">Connect ARS</a>
             <a href="/kit">Kit</a>
             <a className="navcta" href="#contact">
               Join the next cohort
@@ -355,7 +356,7 @@ export default function Home() {
             <Photo src={IMG.desk} alt="Hands taking notes beside a laptop" className="tall parallax" />
             <div>
               <h2>The toolkit you keep after the course</h2>
-              <p className="intro">Latest versions, downloads and free-account setup are always on <a className="textlink" href="/kit">the kit page</a>.</p>
+              <p className="intro">How to connect: <a className="textlink" href="/connect">Connect ARS</a>. Latest versions: <a className="textlink" href="/kit">the kit page</a>.</p>
               <div className="toolkit">
                 {TOOLKIT.map((t) => (
                   <div key={t.name}>
@@ -494,7 +495,8 @@ export default function Home() {
           </nav>
           <nav aria-label="Toolkit">
             <h3>Toolkit</h3>
-            <a href="/kit">Latest versions and setup</a>
+            <a href="/connect">Connect ARS</a>
+            <a href="/kit">Latest versions</a>
             <a href="#toolkit">ARS connector</a>
             <a href="/downloads/AI-Ready-Scholar-Workspace.zip" download>
               Workspace pack
