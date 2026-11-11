@@ -3,10 +3,10 @@ import kit from "../../data/kit.json";
 export const metadata = { title: "AI-Ready Scholar kit: latest versions and setup" };
 
 const ABOUT: Record<string, { name: string; what: string }> = {
-  "scholar-blueprint": { name: "Blueprint skill", what: "Plans the thesis: HEC and university rules, approach, journals, formats, decision log." },
-  "scholar-topic-check": { name: "Topic check skill", what: "Tests a topic as an examiner would. Verdict: Ready, Refine or Not yet." },
-  "scholar-gap-finder": { name: "Gap finder skill", what: "Evidence table, rival check, fake-gap alarms and a gap verdict." },
-  "scholar-research-workspace": { name: "Research workspace skill", what: "Checks your questions without rewriting them; questionnaire blueprint; thesis skeleton." },
+  "scholar-blueprint": { name: "Blueprint method", what: "Plans the thesis: HEC and university rules, approach, journals, formats, decision log." },
+  "scholar-topic-check": { name: "Topic check method", what: "Tests a topic as an examiner would. Verdict: Ready, Refine or Not yet." },
+  "scholar-gap-finder": { name: "Gap finder method", what: "Evidence table, rival check, fake-gap alarms and a gap verdict." },
+  "scholar-research-workspace": { name: "Research workspace method", what: "Checks your questions without rewriting them; questionnaire blueprint; thesis skeleton." },
   "workspace-pack": { name: "Workspace pack", what: "Your folder: logs, disclosure draft, Excel reading matrix, Word thesis and article skeletons." },
   "ars-connector": { name: "ARS connector", what: "Live OpenAlex, Semantic Scholar and Crossref data, with a Pakistan lane and HEC notes." },
 };
@@ -22,10 +22,10 @@ export default function Kit() {
             AI-Ready Scholar
           </a>
           <nav aria-label="Kit">
-            <a href="#setup">Set up</a>
+            <a href="/connect">Connect ARS</a>
             <a href="#logs">Logs</a>
             <a href="#updates">Updates</a>
-            <a className="navcta" href="#setup">
+            <a className="navcta" href="/connect">
               Connect ARS
             </a>
           </nav>
@@ -73,32 +73,8 @@ export default function Kit() {
 
         <section className="band alt" id="setup">
           <div className="wrap">
-            <h2>Set up with a free account</h2>
-            <div className="setupgrid">
-              <div>
-                <h3>Claude</h3>
-                <ol>
-                  <li>Settings, Connectors, Add custom connector: paste <code>https://aireadyscholar.vercel.app/api/mcp</code>. The free plan allows one custom connector. You do this once: the connector always serves the latest method.</li>
-                  <li>Connect your research folder (Claude desktop) or a private GitHub repository, so the AI can keep your logs. It creates the workspace for you if it is empty.</li>
-                  <li>Start: choose an ARS prompt from the connector menu (for example "ars-topic-check"), or type "Use the ARS topic-check method."</li>
-                </ol>
-              </div>
-              <div>
-                <h3>Gemini</h3>
-                <ol>
-                  <li>Add the ARS connector: <code>https://aireadyscholar.vercel.app/api/mcp</code>. Check whether your Gemini plan allows custom connectors.</li>
-                  <li>Type <code>@</code> to attach your NotebookLM notebook, then <code>@ars-connector</code>, and ask: "Call get_method with the name scholar-topic-check and follow it. Quote the version it returns."</li>
-                  <li>Check the version line: it must match the version on this page. If it does not, the method was not loaded; treat the answer as unchecked.</li>
-                </ol>
-              </div>
-              <div>
-                <h3>ChatGPT</h3>
-                <ol>
-                  <li>Free ChatGPT cannot add connectors. The route is one shared custom GPT with the ARS Actions (<code>https://aireadyscholar.vercel.app/openapi.json</code>), built once on a paid plan; scholars on free accounts can then open and use it.</li>
-                  <li>Until that GPT is published, use Claude or Gemini with ARS.</li>
-                </ol>
-              </div>
-            </div>
+            <h2>Set up</h2>
+            <p className="intro">Step-by-step instructions for Claude, Gemini and ChatGPT, and what to type for each method, are on <a className="textlink" href="/connect">Connect ARS</a>.</p>
           </div>
         </section>
 
@@ -117,15 +93,15 @@ export default function Kit() {
                 <tbody>
                   <tr>
                     <th scope="row">Claude with your workspace folder or repository connected</th>
-                    <td>The skill adds rows to logs/ai-use-log.csv, the search and decision logs, saves its output to notes/ and rebuilds logs/disclosure-draft.md. In a git repository each update is a dated commit.</td>
+                    <td>The method adds rows to logs/ai-use-log.csv, the search and decision logs, saves its output to notes/ and rebuilds logs/disclosure-draft.md. In a git repository each update is a dated commit.</td>
                   </tr>
                   <tr>
                     <th scope="row">A chat that can create files</th>
-                    <td>Upload your logs/ai-use-log.csv; the skill gives it back with the new row, ready to save over the old file.</td>
+                    <td>Upload your logs/ai-use-log.csv; the method gives it back with the new row, ready to save over the old file.</td>
                   </tr>
                   <tr>
                     <th scope="row">A chat without files (any plan, any assistant)</th>
-                    <td>The skill prints the row. Paste it into logs/ai-use-log.csv; it opens in Excel.</td>
+                    <td>The method prints the row. Paste it into logs/ai-use-log.csv; it opens in Excel.</td>
                   </tr>
                 </tbody>
               </table>
