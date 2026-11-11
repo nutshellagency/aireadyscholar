@@ -1,32 +1,32 @@
 {
   "kit": "AI-Ready Scholar",
-  "kit_version": "1.2.0",
+  "kit_version": "1.3.0",
   "released": "2026-11-11",
   "home": "https://aireadyscholar.vercel.app/kit",
   "components": [
     {
       "id": "scholar-blueprint",
-      "type": "skill",
-      "version": "1.2.0",
-      "download": "https://aireadyscholar.vercel.app/downloads/skills/scholar-blueprint.zip"
+      "type": "method",
+      "version": "1.3.0",
+      "download": "ARS prompt ars-blueprint or get_method"
     },
     {
       "id": "scholar-topic-check",
-      "type": "skill",
-      "version": "1.2.0",
-      "download": "https://aireadyscholar.vercel.app/downloads/skills/scholar-topic-check.zip"
+      "type": "method",
+      "version": "1.3.0",
+      "download": "ARS prompt ars-topic-check or get_method"
     },
     {
       "id": "scholar-gap-finder",
-      "type": "skill",
-      "version": "1.2.0",
-      "download": "https://aireadyscholar.vercel.app/downloads/skills/scholar-gap-finder.zip"
+      "type": "method",
+      "version": "1.3.0",
+      "download": "ARS prompt ars-gap-finder or get_method"
     },
     {
       "id": "scholar-research-workspace",
-      "type": "skill",
-      "version": "1.2.0",
-      "download": "https://aireadyscholar.vercel.app/downloads/skills/scholar-research-workspace.zip"
+      "type": "method",
+      "version": "1.3.0",
+      "download": "ARS prompt ars-research-workspace or get_method"
     },
     {
       "id": "workspace-pack",
@@ -37,11 +37,16 @@
     {
       "id": "ars-connector",
       "type": "connector",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "download": "https://aireadyscholar.vercel.app/api/mcp"
     }
   ],
   "changes": [
+    {
+      "version": "1.3.0",
+      "date": "2026-11-11",
+      "summary": "Methods are served only by the ARS connector (no downloads). HEC references re-checked on hec.gov.pk: the GenAI framework edition on HEC's site (2026) and the Anti-Plagiarism Policy 2023 v2.0. Every report labels claims Verified, Provisional or Not checked, and saves as Saved, Generated but not saved, or Save failed. Topic check shows an eight-check table; fixed report file names in notes/."
+    },
     {
       "version": "1.2.0",
       "date": "2026-11-11",
