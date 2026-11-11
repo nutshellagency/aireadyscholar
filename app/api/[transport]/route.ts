@@ -10,6 +10,7 @@ import {
   getPaper,
   journalCheck,
   pakistanRequirements,
+  kitStatus,
 } from "@/lib/research";
 
 export const maxDuration = 60;
@@ -93,6 +94,16 @@ const handler = createMcpHandler(
       "Dated summary of HEC's GenAI framework, the 2026 draft AI policy, similarity limits, HJRS and international AI-authorship rules, for orientation. Use when the scholar wants the Pakistan/HEC angle. Not legal advice.",
       {},
       async () => asText(pakistanRequirements())
+    );
+
+    server.tool(
+      "kit_status",
+      "Latest versions of the AI-Ready Scholar skills, workspace pack and connector, with download links and recent changes. Skills call this once per conversation with their own name and version; tell the scholar in one line only if an update is available.",
+      {
+        component: z.string().optional().describe("e.g. scholar-topic-check or workspace-pack"),
+        installed_version: z.string().optional().describe("The version written in the skill or the workspace README, e.g. 1.1.0"),
+      },
+      async (args) => asText(kitStatus(args as any))
     );
   },
   { instructions: INSTRUCTIONS } as any,
