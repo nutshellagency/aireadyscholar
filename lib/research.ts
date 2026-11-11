@@ -635,15 +635,22 @@ export async function journalCheck(a: { journal: string }) {
 
 export function pakistanRequirements() {
   return {
-    as_of: "2026-11",
+    as_of: "2026-11-11",
     hec_genai_framework: {
-      title: "Framework on Use of Generative AI Tools in Higher Education Institutes, v3.3 (13 Feb 2024)",
-      allowed_examples: ["generating research question ideas", "improving language and readability", "translation", "formatting references"],
-      forbidden: ["generating, fabricating or altering research data", "listing AI as an author", "submitting AI-generated text as one's own"],
-      disclosure: "Declare AI use in a statement placed before the references, naming the tool and the purpose.",
+      title: "Framework on Use of Generative AI (GenAI) Tools in Higher Education Institutes (HEIs)",
+      edition: "Edition on hec.gov.pk (Policies), dated 2026 on its cover; no version number printed. Earlier drafts circulated as v3.3 (13 Feb 2024) and v1.0 (2025). Cite the edition on HEC's site and its date.",
+      source: "https://www.hec.gov.pk/english/policies/Pages/Framework-GenAI.aspx",
+      permitted_research_uses: ["literature review: identifying relevant studies and synthesising findings", "brainstorming research questions and theoretical frameworks", "data analysis, subject to verification", "citation checking and writing improvement"],
+      forbidden: ["using GenAI to complete assignments or theses", "generating or fabricating data, results, references or citations", "ghostwriting: presenting AI-written work as one's own without mention", "automating research without human validation", "listing GenAI as an author"],
+      disclosure: "A declaration before the references naming the GenAI tool, why it was used, and that the author reviewed the content and takes full responsibility. MS and PhD students sign an undertaking that the work was not substantially contributed by GenAI and that GenAI was not used to fabricate data, references or citations.",
+      detection: "AI-detection results alone are not enough for disciplinary action; corroborating evidence of intent is required.",
+      universities: "Each university sets its own policy and a committee (Departmental AI Stewardship Committee or Unfair-Means Control Committee).",
     },
-    hec_draft_ai_policy_2026: "Circulated August 2026 (check its current status): each university sets its own AI policy and committee; fabricated references, invented data and AI-generated false results count as serious academic misconduct.",
-    plagiarism: "Similarity index 19% or less overall, and under 5% from any single source (HEC plagiarism policy, as applied by universities and HEC-recognised journals).",
+    plagiarism: {
+      policy: "HEC Anti-Plagiarism Policy, version 2.0, August 2023",
+      source: "https://www.hec.gov.pk/english/policies/Pages/Plagiarism.aspx",
+      rule: "As applied by universities (Turnitin guidelines): at a similarity index of 19% or less the benefit of doubt may be given, but any single source at 5% or more without citation must be revised. The index is a signal for the supervisor to judge, not a verdict. Many universities set a lower limit (for example Air University, 17%): check the university's own policy.",
+    },
     hjrs: "HEC Journal Recognition System ranks journals W, X and Y; categories are recalculated each cycle. Always check hjrs.hec.gov.pk.",
     international: "COPE and ICMJE: AI tools cannot be authors. Major publishers require AI disclosure in a stated place (for example Elsevier: a declaration section before the references).",
     note: "Summary for orientation, not legal advice. The university's own policy and the journal's author guidelines take precedence; cite the original documents.",
@@ -673,7 +680,7 @@ export function kitStatus(a: { component?: string; installed_version?: string } 
           latest: comp.version,
           update_available: newer(comp.version, a.installed_version),
           how_to_update: newer(comp.version, a.installed_version)
-            ? `Download ${comp.download}, remove the old ${comp.id} skill, and upload the new one. Steps for Claude, Gemini and ChatGPT: ${k.home}`
+            ? comp.type === "method" ? `Methods are served by ARS: call get_method (or the ars-* prompt) to use version ${comp.version}.` : `Download ${comp.download}. Steps: ${k.home}`
             : "Up to date.",
         }
       : undefined,
