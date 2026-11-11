@@ -1,18 +1,61 @@
 {
   "kit": "AI-Ready Scholar",
-  "kit_version": "1.1.0",
+  "kit_version": "1.2.0",
   "released": "2026-11-11",
   "home": "https://aireadyscholar.vercel.app/kit",
   "components": [
-    { "id": "scholar-blueprint", "type": "skill", "version": "1.1.0", "download": "https://aireadyscholar.vercel.app/downloads/skills/scholar-blueprint.zip" },
-    { "id": "scholar-topic-check", "type": "skill", "version": "1.1.0", "download": "https://aireadyscholar.vercel.app/downloads/skills/scholar-topic-check.zip" },
-    { "id": "scholar-gap-finder", "type": "skill", "version": "1.1.0", "download": "https://aireadyscholar.vercel.app/downloads/skills/scholar-gap-finder.zip" },
-    { "id": "scholar-research-workspace", "type": "skill", "version": "1.1.0", "download": "https://aireadyscholar.vercel.app/downloads/skills/scholar-research-workspace.zip" },
-    { "id": "workspace-pack", "type": "workspace", "version": "1.1.0", "download": "https://aireadyscholar.vercel.app/downloads/AI-Ready-Scholar-Workspace.zip" },
-    { "id": "ars-connector", "type": "connector", "version": "1.1.0", "download": "https://aireadyscholar.vercel.app/api/mcp" }
+    {
+      "id": "scholar-blueprint",
+      "type": "skill",
+      "version": "1.2.0",
+      "download": "https://aireadyscholar.vercel.app/downloads/skills/scholar-blueprint.zip"
+    },
+    {
+      "id": "scholar-topic-check",
+      "type": "skill",
+      "version": "1.2.0",
+      "download": "https://aireadyscholar.vercel.app/downloads/skills/scholar-topic-check.zip"
+    },
+    {
+      "id": "scholar-gap-finder",
+      "type": "skill",
+      "version": "1.2.0",
+      "download": "https://aireadyscholar.vercel.app/downloads/skills/scholar-gap-finder.zip"
+    },
+    {
+      "id": "scholar-research-workspace",
+      "type": "skill",
+      "version": "1.2.0",
+      "download": "https://aireadyscholar.vercel.app/downloads/skills/scholar-research-workspace.zip"
+    },
+    {
+      "id": "workspace-pack",
+      "type": "workspace",
+      "version": "1.1.0",
+      "download": "https://aireadyscholar.vercel.app/downloads/AI-Ready-Scholar-Workspace.zip"
+    },
+    {
+      "id": "ars-connector",
+      "type": "connector",
+      "version": "1.2.0",
+      "download": "https://aireadyscholar.vercel.app/api/mcp"
+    }
   ],
   "changes": [
-    { "version": "1.1.0", "date": "2026-11-11", "summary": "Skills keep logs/ and the disclosure draft up to date and check for newer versions; workspace pack adds logs/ and notes/; connector adds kit_status, exact-phrase counts and a shared Semantic Scholar limiter." },
-    { "version": "1.0.0", "date": "2026-11-09", "summary": "First release for the CUST seminar: four skills, ARS connector, workspace pack." }
+    {
+      "version": "1.2.0",
+      "date": "2026-11-11",
+      "summary": "The connector now serves the latest method: ARS prompts and get_method load the newest skill text, so connecting ARS is enough. Skills check for a workspace folder or repository at the start and can create the workspace. New log option for chats that can create files."
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-11-11",
+      "summary": "Skills keep logs/ and the disclosure draft up to date and check for newer versions; workspace pack adds logs/ and notes/; connector adds kit_status, exact-phrase counts and a shared Semantic Scholar limiter."
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-11-09",
+      "summary": "First release for the CUST seminar: four skills, ARS connector, workspace pack."
+    }
   ]
 }
