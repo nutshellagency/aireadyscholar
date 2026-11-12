@@ -1,12 +1,33 @@
 {
   "updated": "2026-11-12",
   "seminar": [
-    { "name": "Seminar deck", "version": "v3.2", "what": "25 slides: agentic AI, agents I run, the paper journey, six stages with a detail slide each, ARS and its four methods. Export to PowerPoint or PDF from the deck's Share menu.", "href": "https://claude.ai/artifact/GwzNL21aoUsam3EYTT9Ev4" },
-    { "name": "Stage Rehearsal", "version": "2.7", "what": "Run sheet: the six stages in plain words, what to say, what you will see, and the checklist before stage.", "href": "https://claude.ai/artifact/Pka1Eyvb86MYwRdZzZjQyh" },
-    { "name": "Deck source files", "version": "v3.2", "what": "Every slide as HTML in the kit repo, including removed slides kept for reuse.", "href": "https://github.com/nutshellagency/aireadyscholar-kit/tree/main/deck" }
+    {
+      "name": "Seminar deck",
+      "version": "v3.3",
+      "what": "19 slides: agentic AI, agents I run, the paper journey, the six stages overview, ARS and its four methods. Export to PowerPoint or PDF from the deck's Share menu.",
+      "href": "https://claude.ai/artifact/GwzNL21aoUsam3EYTT9Ev4"
+    },
+    {
+      "name": "Stage Rehearsal",
+      "version": "2.8",
+      "what": "Run sheet plus the full Stage guide: for each of the six stages, the goal, how, take care, what you leave with, what to type and what to say.",
+      "href": "https://claude.ai/artifact/Pka1Eyvb86MYwRdZzZjQyh"
+    },
+    {
+      "name": "Deck source files",
+      "version": "v3.3",
+      "what": "Every slide as HTML in the kit repo, including removed slides (the six stage slides among them) kept for reuse.",
+      "href": "https://github.com/nutshellagency/aireadyscholar-kit/tree/main/deck"
+    }
   ],
   "repos": [
-    { "name": "Kit repo (master copy)", "href": "https://github.com/nutshellagency/aireadyscholar-kit" },
-    { "name": "Connector and website repo", "href": "https://github.com/nutshellagency/aireadyscholar" }
+    {
+      "name": "Kit repo (master copy)",
+      "href": "https://github.com/nutshellagency/aireadyscholar-kit"
+    },
+    {
+      "name": "Connector and website repo",
+      "href": "https://github.com/nutshellagency/aireadyscholar"
+    }
   ]
 }
